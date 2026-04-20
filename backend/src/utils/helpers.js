@@ -1,8 +1,4 @@
-export const respond = (data = {}, status = 200) => {
-  return {
-    status,
-    data,
-    timestamp: Date.now()
-  };
-};
+export const id = () =>
+  Math.random().toString(36).substring(2) + Date.now().toString(36);
 
+export const noop = () => {};
