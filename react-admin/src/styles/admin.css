@@ -1,0 +1,52 @@
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background: #111;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar button {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.main-panel {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.log-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.log-entry {
+  background: #111;
+  padding: 10px;
+  border: 1px solid #333;
+}
+
+.timestamp {
+  color: #888;
+  font-size: 12px;
+}
+
