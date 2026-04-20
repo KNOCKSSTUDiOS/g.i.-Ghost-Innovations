@@ -1,0 +1,12 @@
+{
+  "name": "gi-mobile",
+  "version": "1.0.0",
+  "main": "App.js",
+  "dependencies": {
+    "@react-navigation/native": "^7.0.0",
+    "@react-navigation/stack": "^7.0.0",
+    "react": "18.3.0",
+    "react-native": "0.76.0"
+  }
+}
+
