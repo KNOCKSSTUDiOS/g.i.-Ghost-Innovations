@@ -12,12 +12,12 @@ export default function AssetManager({ project }) {
   return (
     <div className="asset-manager">
       <h3>Assets</h3>
+
       {files.map(f => (
-        <div key={f.id} className="asset-item">
+        <div key={f.id} className="asset-item" style={{ marginBottom: "10px" }}>
           <span>{f.filename}</span>
         </div>
       ))}
     </div>
   );
 }
-
