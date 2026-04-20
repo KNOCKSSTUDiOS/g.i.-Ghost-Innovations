@@ -1,0 +1,20 @@
+react-admin/
+│
+├── src/
+│   ├── App.jsx
+│   ├── components/
+│   │   ├── LogStream.jsx
+│   │   ├── IdentityBar.jsx
+│   │   ├── MetricsPanel.jsx
+│   │   ├── MemoryViewer.jsx
+│   │   ├── StorageViewer.jsx
+│   │   └── Sidebar.jsx
+│   ├── hooks/
+│   │   └── useRealtime.js
+│   ├── styles/
+│   │   └── admin.css
+│   └── index.jsx
+│
+├── package.json
+└── vite.config.js
+
