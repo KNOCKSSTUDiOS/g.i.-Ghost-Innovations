@@ -1,15 +1,18 @@
-export function success(res, data = {}, message = "OK") {
-  return res.json({
-    ok: true,
+export function ok(data = {}, meta = {}) {
+  return {
+    success: true,
+    data,
+    meta
+  };
+}
+
+export function fail(message = "Error", status = 500, meta = {}) {
+  return {
+    success: false,
+    error: {
     message,
-    ...data
-  });
+    status,
+    meta
+    }
+  };
 }
-
-export function failure(res, error = "Error", code = 500) {
-  return res.status(code).json({
-    ok: false,
-    error
-  });
-}
-
