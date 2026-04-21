@@ -1,11 +1,22 @@
-import { trackRequest, trackError } from "./gi-metrics/traffic";
+import http from "http";
+import { createCore } from "./gi-core/core";
+import { createRouter } from "./gi-router/router";
 
-app.use((req, res, next) => {
-  trackRequest();
-  next();
+import { registerAuthExtension } from "./gi-extensions-auth/auth-extension";
+import { registerUserExtension } from "./gi-extensions-user/user-extension";
+import { registerSystemExtension } from "./gi-extensions-system/system-extension";
+
+const core = createCore();
+const router = createRouter(core);
+
+registerAuthExtension(router, core);
+registerUserExtension(router, core);
+registerSystemExtension(router, core);
+
+const server = http.createServer(async (req, res) => {
+  await router.handle(req, res);
 });
 
-app.use((err, req, res, next) => {
-  trackError();
-  next(err);
+server.listen(8080, () => {
+  core.logger.log("server_started");
 });
