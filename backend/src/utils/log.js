@@ -1,16 +1,11 @@
-export function log(...args) {
-  console.log(...args);
-}
-
 export function info(...args) {
-  console.info(...args);
+  console.log("[INFO]", ...args);
 }
 
 export function warn(...args) {
-  console.warn(...args);
+  console.warn("[WARN]", ...args);
 }
 
 export function error(...args) {
-  console.error(...args);
+  console.error("[ERROR]", ...args);
 }
-
