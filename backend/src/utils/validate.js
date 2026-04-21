@@ -1,13 +1,16 @@
 export function isEmail(str = "") {
-  if (typeof str !== "string") return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str.trim());
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
 }
 
-export function isString(v) {
-  return typeof v === "string";
+export function isUUID(str = "") {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str);
 }
 
-export function isNumber(v) {
-  return typeof v === "number" && !isNaN(v);
+export function isURL(str = "") {
+  try {
+    new URL(str);
+    return true;
+  } catch {
+    return false;
+  }
 }
-
