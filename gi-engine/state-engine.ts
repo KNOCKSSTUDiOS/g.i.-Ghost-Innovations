@@ -4,73 +4,112 @@ export interface GIStateSlice<T = any> {
   id: string;
   key: string;
   value: T;
+  createdAt: number;
   updatedAt: number;
 }
 
-export interface GIStateConfig {
-  maxSlices?: number;
+export interface GIStateSubscriber<T = any> {
+  id: string;
+  fn: (value: T) => void;
+  createdAt: number;
 }
 
 export class GI_StateEngine {
-  slices: Map<string, GIStateSlice>;
-  maxSlices: number;
+  private slices: Map<string, GIStateSlice>;
+  private subscribers: Map<string, GIStateSubscriber<any>[]>;
 
-  constructor(config: GIStateConfig = {}) {
+  constructor() {
     this.slices = new Map();
-    this.maxSlices = config.maxSlices || 500;
+    this.subscribers = new Map();
   }
 
-  set<T = any>(key: string, value: T) {
+  // ---------- CREATE ----------
+  createSlice<T>(key: string, initial: T): GIStateSlice<T> {
     const slice: GIStateSlice<T> = {
       id: crypto.randomUUID(),
       key,
-      value,
+      value: initial,
+      createdAt: Date.now(),
       updatedAt: Date.now()
     };
 
     this.slices.set(key, slice);
-
-    if (this.slices.size > this.maxSlices) {
-      const oldest = [...this.slices.values()].sort(
-        (a, b) => a.updatedAt - b.updatedAt
-      )[0];
-      if (oldest) this.slices.delete(oldest.key);
-    }
+    this.subscribers.set(key, []);
 
     return slice;
   }
 
+  // ---------- GET ----------
   get<T = any>(key: string): T | null {
     const slice = this.slices.get(key);
     return slice ? (slice.value as T) : null;
   }
 
-  delete(key: string) {
-    this.slices.delete(key);
+  // ---------- SET ----------
+  set<T = any>(key: string, value: T) {
+    const slice = this.slices.get(key);
+    if (!slice) return;
+
+    slice.value = value;
+    slice.updatedAt = Date.now();
+    this.emit(key, value);
   }
 
-  all() {
-    return [...this.slices.values()];
+  // ---------- UPDATE ----------
+  update<T = any>(key: string, fn: (prev: T) => T) {
+    const slice = this.slices.get(key);
+    if (!slice) return;
+
+    slice.value = fn(slice.value as T);
+    slice.updatedAt = Date.now();
+    this.emit(key, slice.value);
   }
 
-  patch<T = any>(key: string, patch: Partial<T>) {
-    const current = this.get<T>(key);
-    if (!current) return this.set(key, patch as T);
+  // ---------- SUBSCRIBE ----------
+  subscribe<T = any>(key: string, fn: (value: T) => void): GIStateSubscriber<T> | null {
+    if (!this.slices.has(key)) return null;
 
-    const merged = { ...(current as any), ...patch };
-    return this.set(key, merged);
+    const sub: GIStateSubscriber<T> = {
+      id: crypto.randomUUID(),
+      fn,
+      createdAt: Date.now()
+    };
+
+    this.subscribers.get(key)!.push(sub);
+    return sub;
   }
 
-  select<T = any>(selector: (state: Record<string, any>) => T) {
-    const obj: Record<string, any> = {};
-    for (const slice of this.slices.values()) {
-      obj[slice.key] = slice.value;
+  unsubscribe(key: string, id: string) {
+    if (!this.subscribers.has(key)) return;
+    const list = this.subscribers.get(key)!;
+    this.subscribers.set(
+      key,
+      list.filter(s => s.id !== id)
+    );
+  }
+
+  // ---------- SNAPSHOT ----------
+  snapshot() {
+    const out: Record<string, any> = {};
+    for (const [key, slice] of this.slices.entries()) {
+      out[key] = slice.value;
     }
-    return selector(obj);
+    return out;
+  }
+
+  // ---------- INTERNAL ----------
+  private emit<T>(key: string, value: T) {
+    const list = this.subscribers.get(key) || [];
+    for (const sub of list) {
+      try {
+        sub.fn(value);
+      } catch {
+        // state updates must never break the engine
+      }
+    }
   }
 }
 
-export function createGIStateEngine(config: GIStateConfig = {}) {
-  return new GI_StateEngine(config);
+export function createGIStateEngine() {
+  return new GI_StateEngine();
 }
-
