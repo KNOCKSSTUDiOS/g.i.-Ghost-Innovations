@@ -6,8 +6,7 @@ export function toISO(date = new Date()) {
   return date.toISOString();
 }
 
-export function addDays(date = new Date(), days = 1) {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
-  return d;
+export function fromISO(str = "") {
+  const d = new Date(str);
+  return isNaN(d.getTime()) ? null : d;
 }
