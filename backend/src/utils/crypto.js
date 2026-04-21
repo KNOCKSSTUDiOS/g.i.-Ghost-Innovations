@@ -5,8 +5,8 @@ export function hash(str = "", algorithm = "sha256") {
 }
 
 export function compareHash(str = "", hashed = "", algorithm = "sha256") {
-  const newHash = crypto.createHash(algorithm).update(str).digest("hex");
-  return newHash === hashed;
+  const h = crypto.createHash(algorithm).update(str).digest("hex");
+  return h === hashed;
 }
 
 export function randomHex(length = 32) {
