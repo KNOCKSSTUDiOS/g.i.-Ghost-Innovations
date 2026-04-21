@@ -1,26 +1,20 @@
-export function delay(ms = 1000) {
+export function sleep(ms = 1000) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function waitFor(fn, interval = 200, timeout = 5000) {
-  const start = Date.now();
-
-  return new Promise((resolve, reject) => {
-    const check = async () => {
-      try {
-        const result = await fn();
-        if (result) return resolve(result);
-
-        if (Date.now() - start >= timeout) {
-          return reject(new Error("waitFor: timeout exceeded"));
-        }
-
-        setTimeout(check, interval);
-      } catch (err) {
-        reject(err);
-      }
-    };
-
-    check();
+export function timeout(promise, ms = 5000) {
+  let timer;
+  const timeoutPromise = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error("Operation timed out")), ms);
   });
+  return Promise.race([
+    promise.finally(() => clearTimeout(timer)),
+    timeoutPromise
+  ]);
+}
+
+export function wrap(promise) {
+  return promise
+    .then(data => [null, data])
+    .catch(err => [err, null]);
 }
