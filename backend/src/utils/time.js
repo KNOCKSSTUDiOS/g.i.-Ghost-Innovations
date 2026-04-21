@@ -1,11 +1,9 @@
-export function seconds(n = 1) {
-  return n * 1000;
+import crypto from "crypto";
+
+export function id(length = 21) {
+  return crypto.randomBytes(length).toString("base64url").slice(0, length);
 }
 
-export function minutes(n = 1) {
-  return n * 60 * 1000;
-}
-
-export function hours(n = 1) {
-  return n * 60 * 60 * 1000;
+export function shortID(length = 8) {
+  return crypto.randomBytes(length).toString("hex").slice(0, length);
 }
