@@ -1,7 +1,3 @@
-export function ms(n = 1) {
-  return n;
-}
-
 export function seconds(n = 1) {
   return n * 1000;
 }
