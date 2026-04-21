@@ -1,14 +1,10 @@
-export function getPage(query = {}) {
-  const p = parseInt(query.page, 10);
-  return isNaN(p) || p < 1 ? 1 : p;
-}
+export function paginate(page = 1, limit = 20) {
+  const p = Math.max(parseInt(page, 10) || 1, 1);
+  const l = Math.max(parseInt(limit, 10) || 20, 1);
 
-export function getLimit(query = {}, defaultLimit = 20) {
-  const l = parseInt(query.limit, 10);
-  return isNaN(l) || l < 1 ? defaultLimit : l;
+  return {
+    page: p,
+    limit: l,
+    offset: (p - 1) * l
+  };
 }
-
-export function getOffset(page = 1, limit = 20) {
-  return (page - 1) * limit;
-}
-
