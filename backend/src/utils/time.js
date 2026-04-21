@@ -1,3 +1,11 @@
-export const now = () => Date.now();
+export function now() {
+  return Date.now();
+}
 
-export const iso = () => new 
+export function iso() {
+  return new Date().toISOString();
+}
+
+export function format(ts) {
+  return new Date(ts).toLocaleString();
+}
