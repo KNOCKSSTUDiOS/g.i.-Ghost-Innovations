@@ -1,0 +1,16 @@
+export function capitalize(str = "") {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function toSlug(str = "") {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function trimAll(str = "") {
+  return str.replace(/\s+/g, " ").trim();
+}
