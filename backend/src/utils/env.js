@@ -1,12 +1,12 @@
-export function getEnv(key, fallback = null) {
-  const v = process.env[key];
-  return v !== undefined ? v : fallback;
+export function getEnv(key = "", fallback = null) {
+  const val = process.env[key];
+  return val !== undefined ? val : fallback;
 }
 
-export function requireEnv(key) {
-  const v = process.env[key];
-  if (v === undefined) {
+export function requireEnv(key = "") {
+  const val = process.env[key];
+  if (val === undefined) {
     throw new Error(`Missing required environment variable: ${key}`);
   }
-  return v;
+  return val;
 }
