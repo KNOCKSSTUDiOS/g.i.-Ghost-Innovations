@@ -1,15 +1,12 @@
 export function clamp(value, min = 0, max = 1) {
-  if (value < min) return min;
-  if (value > max) return max;
-  return value;
+  return Math.min(Math.max(value, min), max);
 }
 
-export function sum(list = []) {
-  if (!Array.isArray(list)) return 0;
-  return list.reduce((acc, n) => acc + (Number(n) || 0), 0);
+export function lerp(a = 0, b = 1, t = 0.5) {
+  return a + (b - a) * t;
 }
 
-export function average(list = []) {
-  if (!Array.isArray(list) || list.length === 0) return 0;
-  return sum(list) / list.length;
+export function roundTo(value = 0, decimals = 0) {
+  const factor = Math.pow(10, decimals);
+  return Math.round(value * factor) / factor;
 }
