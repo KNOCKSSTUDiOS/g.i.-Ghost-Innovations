@@ -1,17 +1,17 @@
-export function slugify(str = "") {
-  return str
-    .toString()
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 export function capitalize(str = "") {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function trimAll(str = "") {
-  return str.replace(/\s+/g, " ").trim();
+export function camelCase(str = "") {
+  return str
+    .toLowerCase()
+    .replace(/[-_ ]+([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+export function snakeCase(str = "") {
+  return str
+    .replace(/([A-Z])/g, "_$1")
+    .replace(/[- ]+/g, "_")
+    .toLowerCase();
 }
