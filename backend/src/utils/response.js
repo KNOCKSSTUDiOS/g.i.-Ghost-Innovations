@@ -1,18 +1,16 @@
-export function ok(data = {}, meta = {}) {
+export function success(data = null, status = 200) {
   return {
-    success: true,
-    data,
-    meta
+    ok: true,
+    status,
+    data
   };
 }
 
-export function fail(message = "Error", status = 500, meta = {}) {
+export function fail(message = "Error", status = 500, data = null) {
   return {
-    success: false,
-    error: {
-    message,
+    ok: false,
     status,
-    meta
-    }
+    message,
+    data
   };
 }
