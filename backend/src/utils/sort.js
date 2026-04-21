@@ -1,22 +1,15 @@
-export function asc(a, b) {
-  if (a < b) return -1;
-  if (a > b) return 1;
-  return 0;
-}
-
-export function desc(a, b) {
-  if (a > b) return -1;
-  if (a < b) return 1;
-  return 0;
-}
-
-export function byKey(key, direction = "asc") {
+export function asc(field = "") {
   return (a, b) => {
-    if (!a || !b) return 0;
-    const av = a[key];
-    const bv = b[key];
+    if (a[field] < b[field]) return -1;
+    if (a[field] > b[field]) return 1;
+    return 0;
+  };
+}
 
-    if (direction === "asc") return asc(av, bv);
-    return desc(av, bv);
+export function desc(field = "") {
+  return (a, b) => {
+    if (a[field] > b[field]) return -1;
+    if (a[field] < b[field]) return 1;
+    return 0;
   };
 }
