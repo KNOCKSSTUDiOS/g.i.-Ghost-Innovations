@@ -11,6 +11,7 @@ import { createGIPipelineEngine } from "./pipeline-engine";
 import { createGIStorageEngine } from "./storage-engine";
 import { createGILoggerEngine, GI_ConsoleSink } from "./logger-engine";
 import { createGIConfigEngine } from "./config-engine";
+import { createGIUserEngine } from "./user-engine";
 
 export interface GICoreEngine {
   auth: ReturnType<typeof createGIAuthEngine>;
@@ -26,6 +27,7 @@ export interface GICoreEngine {
   storage: ReturnType<typeof createGIStorageEngine>;
   logger: ReturnType<typeof createGILoggerEngine>;
   config: ReturnType<typeof createGIConfigEngine>;
+  user: ReturnType<typeof createGIUserEngine>;
 }
 
 export function createGICoreEngine(): GICoreEngine {
@@ -54,11 +56,11 @@ export function createGICoreEngine(): GICoreEngine {
     pipeline: createGIPipelineEngine(),
     storage: createGIStorageEngine(),
     logger,
-    config
+    config,
+    user: createGIUserEngine()
   };
 
   engine.tasks.start();
 
   return engine;
 }
-
