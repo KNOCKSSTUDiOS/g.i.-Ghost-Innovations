@@ -1,14 +1,25 @@
 import crypto from "crypto";
 
-export function hash(text) {
-  return crypto.createHash("sha256").update(text).digest("hex");
+export function sha256(input = "") {
+  return crypto.createHash("sha256").update(input).digest("hex");
 }
 
-export function compareHash(text, hashed) {
-  return hash(text) === hashed;
+export function sha1(input = "") {
+  return crypto.createHash("sha1").update(input).digest("hex");
 }
 
-export function uuid() {
-  return crypto.randomUUID();
+export function md5(input = "") {
+  return crypto.createHash("md5").update(input).digest("hex");
 }
 
+export function randomBytes(size = 32) {
+  return crypto.randomBytes(size).toString("hex");
+}
+
+export function secureToken(length = 48) {
+  return crypto.randomBytes(length).toString("hex");
+}
+
+export function compareHash(input, hashed) {
+  return sha256(input) === hashed;
+}
