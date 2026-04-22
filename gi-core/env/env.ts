@@ -1,25 +1,30 @@
 export class Env {
-  private values: Record<string, string> = {};
-
-  load(source: Record<string, string | undefined>) {
-    for (const key in source) {
-      const val = source[key];
-      if (typeof val === "string") {
-        this.values[key] = val;
-      }
-    }
+  get(key: string, fallback: string | null = null): string | null {
+    const value = process.env[key];
+    return value !== undefined ? value : fallback;
   }
 
-  get(key: string, fallback: string = ""): string {
-    return this.values[key] ?? fallback;
+  getNumber(key: string, fallback: number | null = null): number | null {
+    const value = process.env[key];
+    if (value === undefined) return fallback;
+    const num = Number(value);
+    return isNaN(num) ? fallback : num;
+  }
+
+  getBool(key: string, fallback: boolean | null = null): boolean | null {
+    const value = process.env[key];
+    if (value === undefined) return fallback;
+    const normalized = value.toLowerCase();
+    if (normalized === "true") return true;
+    if (normalized === "false") return false;
+    return fallback;
   }
 
   require(key: string): string {
-    const val = this.values[key];
-    if (!val) {
-      throw new Error(`Missing environment variable: ${key}`);
+    const value = process.env[key];
+    if (value === undefined) {
+      throw new Error(`Missing required environment variable: ${key}`);
     }
-    return val;
+    return value;
   }
 }
-
